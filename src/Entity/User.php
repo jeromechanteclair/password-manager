@@ -2,56 +2,28 @@
 
 namespace App\Entity;
 
+
+
+use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Entity
+ * @ORM\Table(name="fos_user")
  */
-class User
+class User extends BaseUser
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\Id
      * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $Name;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $password;
-
-    public function getId()
+    public function __construct()
     {
-        return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->Name;
-    }
-
-    public function setName(string $Name): self
-    {
-        $this->Name = $Name;
-
-        return $this;
-    }
-
-    public function getPassword(): ?int
-    {
-        return $this->password;
-    }
-
-    public function setPassword(int $password): self
-    {
-        $this->password = $password;
-
-        return $this;
+        parent::__construct();
+        // your own logic
+        $this->addRole("ROLE_ADMIN");
     }
 }

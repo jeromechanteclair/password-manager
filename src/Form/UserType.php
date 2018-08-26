@@ -12,10 +12,19 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Name')
-            ->add('password')
+          //  ->add('username')
+          //  ->add('email')
+          //  ->add('password')
         ;
     }
+    public function getParent()
+  {
+      return 'FOS\UserBundle\Form\Type\RegistrationFormType';
+  }
+  public function getBlockPrefix()
+   {
+       return 'app_user_registration';
+   }
 
     public function configureOptions(OptionsResolver $resolver)
     {
