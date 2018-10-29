@@ -7,7 +7,7 @@
 
 // any CSS you require will output into a single css file (app.css in this case)
 require('../sass/app.scss');
-
+require('../sass/normalize.scss');
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // var $ = require('jquery');
 
@@ -20,6 +20,6 @@ var $ = require('jquery');
 var greet = require('./greet');
 
 $(document).ready(function() {
-    $('body').prepend('<h1>'+greet('michel')+'</h1>');
+  //  $('body').prepend('<h1>'+greet('michel')+'</h1>');
   //  alert('yes');
 });

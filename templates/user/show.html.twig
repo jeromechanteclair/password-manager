@@ -13,12 +13,17 @@
             </tr>
             <tr>
                 <th>Name</th>
-                <td>{{ user.Name }}</td>
+                <td>{{ user.username }}</td>
             </tr>
             <tr>
                 <th>Password</th>
                 <td>{{ user.password }}</td>
             </tr>
+            <tr>
+                <th>Last Login</th>
+                <td>{{ user.lastlogin|date('Y-m-d') }}</td>
+            </tr>
+            
         </tbody>
     </table>
 

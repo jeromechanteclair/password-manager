@@ -1,8 +1,11 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+index:
+   path: /
+   controller: App\PW\SecurityBundle\Controller\AdminController::Hello
 login:
    path: /login
    controller: App\PW\SecurityBundle\Controller\SecurityController::login
+create_password:
+    path: /createpassword
+    controller: App\PW\PasswordBundle\Controller\PasswordController::createPassword
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"

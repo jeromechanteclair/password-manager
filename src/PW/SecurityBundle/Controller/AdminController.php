@@ -3,7 +3,11 @@
 namespace App\PW\SecurityBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class AdminController extends Controller
 {
     public function indexAction()
@@ -17,5 +21,19 @@ class AdminController extends Controller
         $user->addRole("ROLE_ADMIN");
         // Update user roles
         $userManager->updateUser($user);
+    }
+  /**
+    * @Route("/", name="hello")
+    * @IsGranted("ROLE_ADMIN")
+    * @Security("has_role('ROLE_ADMIN')")
+  */
+    public function Hello(UserInterface $user)
+    {
+      ;
+      return $this->render('user/hello.html.twig', [
+          'user' => $user,
+        //  'form' => $form->createView(),
+      ]);
+
     }
 }
