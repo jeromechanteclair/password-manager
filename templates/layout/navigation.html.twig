@@ -6,17 +6,22 @@
   <nav>
     {% if app.user %}
     <div class="nav-left">
-      <div class="dropdown"><a>Bonjour <b>{{ user.username }}</b></a>
+        <img class="logo_small" src=" {{asset('build/images/lock.gif')}}">
+      <div class="dropdown"><a href="/">Bonjour <b>{{ app.user.username }}</b> </a>
         <div>
-        <a href="{{ path('user_show',{'id':user.id}) }}">Mes informations</a>
-        <a href="{{ path('user_edit',{'id':user.id}) }}">Editer mon profil</a>
+        <a href="{{ path('user_show',{'id': app.user.id}) }}">Mes informations</a>
+        <a href="{{ path('user_edit',{'id': app.user.id}) }}">Editer mon profil</a>
         <a href="/logout">Me déconnecter</a>
       </div>
     </div>
+
     </div>
+    <div class="nav-center">
+        <a href="{{ path('password_index') }}">Mes mots de passe</a>
+      </div>
     {% endif %}
     <div class="nav-right">
-      <a href="{{ path('create_password') }}"><button>createPassword</button></a>
+      <a href="{{ path('password_new') }}"><button>AJOUTER UN NOUVEAU</button></a>
     </div>
   </nav>
 </header>

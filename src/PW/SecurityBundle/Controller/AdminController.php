@@ -27,13 +27,16 @@ class AdminController extends Controller
     * @IsGranted("ROLE_ADMIN")
     * @Security("has_role('ROLE_ADMIN')")
   */
-    public function Hello(UserInterface $user)
+    public function Hello(UserInterface $user=null)
     {
-      ;
-      return $this->render('user/hello.html.twig', [
-          'user' => $user,
-        //  'form' => $form->createView(),
-      ]);
+      if($user!== null)
+      {
+        return $this->render('user/hello.html.twig', [
+            'user' => $user,
+          //  'form' => $form->createView(),
+        ]);
+      }
+
 
     }
 }
