@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Password;
-use App\Form\PasswordType;
+use App\Form\PasswordTypeType;
 use App\Repository\PasswordRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +29,7 @@ class PasswordController extends AbstractController
     public function new(Request $request): Response
     {    $user = $this->get('security.token_storage')->getToken()->getUser();
         $password = new Password();
-        $form = $this->createForm(PasswordType::class, $password);
+        $form = $this->createForm(PasswordTypeType::class, $password);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -60,7 +60,7 @@ class PasswordController extends AbstractController
      */
     public function edit(Request $request, Password $password): Response
     {
-        $form = $this->createForm(PasswordType::class, $password);
+        $form = $this->createForm(PasswordTypeType::class, $password);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

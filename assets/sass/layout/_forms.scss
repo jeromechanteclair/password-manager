@@ -1,34 +1,86 @@
-form{
-
-padding: 20px;
+form {
+  padding: 20px;
   display: flex;
   flex-flow: column;
   max-width: 480px;
   margin: 0 auto;
-  label{
+
+  label {
     font-size: 12px;
     text-align: left;
     text-transform: uppercase;
     margin-bottom: 10px;
   }
-  input{
+
+  input {
     padding: 10px 15px;
     margin-bottom: 20px;
-    border:0px;
-    border:1px solid #eeeeee;
+    border: 0;
+    border: 1px solid #eeeeee;
   }
-  input[type="checkbox"]{
+
+  input[type="checkbox"] {
     margin-bottom: 10px;
     margin-right: 10px;
   }
-  input[type="submit"]{
+
+  input[type="submit"] {
     margin-top: 20px;
     background: $secondary-color;
     padding: 20px;
   }
-  span{
+
+  span {
     display: flex;
     align-items: center;
   }
 
+  #strength_bar {
+    border: 1px solid #eeeeee;
+    display: block;
+    width: 100%;
+    height: 15px;
+    margin-bottom: 20px;
+
+  }
+.password_input{
+  position: relative;
+    input[type='password'],input[type='text']{
+      width: calc(100% - 30px);
+      margin-bottom: 0;
+    }
+  input[type='checkbox']{
+    width: 20px;
+    background-position: right;
+    position: relative;
+
+    left: 47%;
+    bottom: 26px;
+  }
+}
+  .weakbar {
+    background: linear-gradient(to right, red 50%, white 50%);
+    background-size: 200% 100%;
+    animation: slideright 1.5s both;
+  }
+
+  .goodbar {
+    background: linear-gradient(to right, yellow 50%, white 50%);
+    background-size: 200% 100%;
+    animation: slideright 1.5s both;
+  }
+
+  .strongbar {
+    background: linear-gradient(to right, green 50%, white 50%);
+    background-size: 200% 100%;
+    animation: slideright 1.5s both;
+  }
+}
+@keyframes slideright {
+  0% {
+    background-position: right bottom;
+  }
+  100% {
+    background-position: left bottom;
+  }
 }

@@ -1,7 +1,111 @@
-{{ form_start(form) }}
-  {{ form_widget(form.name) }}
-  {{ form_widget(form.url) }}
-  {{ form_widget(form.password) }}
+{% set randomPassword = [] %}
+{% set alpha = 'abcdefghijklmnopqrstuvwxyz' %}
+{% set numbers = '0123456789' %}
 
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{% for i in 1..20 %}
+  {% set randomCharacter = random(alpha ~ alpha|upper ~ numbers ~ '-_') %}
+  {% set randomPassword = randomPassword | merge([randomCharacter]) %}
+{% endfor %}
+{% set randomPassword = randomPassword | join %}
+
+{{ form_start(form) }}
+{{ form_errors(form.password) }}
+{{ form_label(form.name) }}
+{{ form_widget(form.name) }}
+{{ form_label(form.url) }}
+{{ form_widget(form.url) }}
+{{ form_label(form.password) }}
+<div class="password_input">
+  {% if password.password is not null %}
+    {{ form_widget(form.password, { value : password.password, 'id':'password' }) }}
+
+  {% else %}
+    {{ form_widget(form.password, { value : randomPassword, 'id':'password'  }) }}
+  {% endif %}
+  <input type="checkbox" onclick="myFunction('password')" checked="checked">
+</div>
+
+<div id="strength_bar"></div>
+<button class="btn">{{ button_label|default('Save') }}</button>
+
 {{ form_end(form) }}
+<script>
+  function myFunction(id) {
+    var x = document.getElementById(id);
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+  }
+
+  function scorePassword(pass) {
+    var score = 0;
+    if (!pass)
+      return score;
+
+    // award every unique letter until 5 repetitions
+    var letters = new Object();
+    for (var i = 0; i < pass.length; i++) {
+      letters[pass[i]] = (letters[pass[i]] || 0) + 1;
+      score += 5.0 / letters[pass[i]];
+    }
+
+    // bonus points for mixing it up
+    var variations = {
+      digits: /\d/.test(pass),
+      lower: /[a-z]/.test(pass),
+      upper: /[A-Z]/.test(pass),
+      nonWords: /\W/.test(pass)
+    }
+
+    variationCount = 0;
+    for (var check in variations) {
+      variationCount += (variations[check] == true)
+        ? 1
+        : 0;
+    }
+    score += (variationCount - 1) * 10;
+
+    return parseInt(score);
+  }
+
+  function checkPassStrength(pass) {
+    var score = scorePassword(pass);
+    if (score > 80)
+      return "strong";
+    if (score > 60)
+      return "good";
+    if (score >= 30)
+      return "weak";
+
+    return "weak";
+  }
+  function displayStrong() {
+    checkPassStrength($("#password").val());
+    if (checkPassStrength($("#password").val()) === "strong") {
+      $('#strength_bar').removeClass('goodbar');
+      $('#strength_bar').removeClass('weakbar');
+      $('#strength_bar').addClass('strongbar');
+    };
+    if (checkPassStrength($("#password").val()) === "good") {
+      $('#strength_bar').removeClass('strongbar');
+      $('#strength_bar').removeClass('weakbar');
+      $('#strength_bar').addClass('goodbar');
+    };
+    if (checkPassStrength($("#password").val()) === "weak") {
+      $('#strength_bar').removeClass('strongbar');
+      $('#strength_bar').removeClass('goodbar');
+      $('#strength_bar').addClass('weakbar');
+    }
+  }
+  $(document).ready(function() {
+    myFunction('password');
+    displayStrong();
+
+    console.log($("#password").val())
+    $("#password").on("keypress keyup keydown", function() {
+      displayStrong()
+    });
+  });
+</script>

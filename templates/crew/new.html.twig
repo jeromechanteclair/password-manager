@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Crew{% endblock %}
+
+{% block body %}
+    <h1>Create new Crew</h1>
+
+    {{ form_start(form) }}
+
+    <button class="btn">{{ button_label|default('Save') }}</button>
+    <a href="{{ path('createuser', query|merge({'email': "j.mail@mail.com","username":"usernameZ"})) }}">create</a>
+
+    {{ form_end(form) }}
+    <a href="{{ path('password_index') }}">back to list</a>
+{% endblock %}

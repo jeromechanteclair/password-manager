@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
+use Rollerworks\Component\PasswordStrength\Validator\Constraints as RollerworksPassword;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PasswordRepository")
@@ -34,6 +35,7 @@ class Password
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @RollerworksPassword\PasswordStrength(minLength=7, minStrength=3)
      */
     private $password;
 
