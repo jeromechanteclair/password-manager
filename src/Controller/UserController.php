@@ -35,6 +35,8 @@ class UserController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
+            $user->setEnabled(1);
+            $user->addRole('ROLE_USER');
             $em->flush();
 
             return $this->redirectToRoute('user_index');

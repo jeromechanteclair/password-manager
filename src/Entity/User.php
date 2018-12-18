@@ -35,7 +35,7 @@ class User extends BaseUser
     {
         parent::__construct();
         // your own logic
-        $this->addRole("ROLE_ADMIN");
+      //  $this->addRole("ROLE_ADMIN");
         $this->crews = new ArrayCollection();
 
     }

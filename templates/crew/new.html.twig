@@ -8,8 +8,33 @@
     {{ form_start(form) }}
 
     <button class="btn">{{ button_label|default('Save') }}</button>
-    <a href="{{ path('createuser', query|merge({'email': "j.mail@mail.com","username":"usernameZ"})) }}">create</a>
+
 
     {{ form_end(form) }}
+    <button id="myBtn">Open Modal</button>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Some text in the Modal..</p>
+      </div>
+
+    </div>
+    <div id="newUser">
+
+    </div>
     <a href="{{ path('password_index') }}">back to list</a>
+    <script>
+    var path='{{ path('user_new') }}';
+    console.log(path);
+    $.ajax({
+      url: path,
+      context: document.body
+    }).done(function(data) {
+      $( '.modal-content' ).html( data );
+    });
+    </script>
 {% endblock %}

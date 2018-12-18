@@ -24,7 +24,7 @@ class CrewType extends AbstractType
                   return $er->createQueryBuilder('u')
                       ->orderBy('u.username', 'ASC');
               },
-              'expanded'     => true,
+              //'expanded'     => true,
               'multiple'     => true,
               'choice_label' => 'username',
           ));
