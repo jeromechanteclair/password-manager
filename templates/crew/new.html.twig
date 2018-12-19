@@ -28,13 +28,17 @@
     </div>
     <a href="{{ path('password_index') }}">back to list</a>
     <script>
-    var path='{{ path('user_new') }}';
-    console.log(path);
-    $.ajax({
-      url: path,
-      context: document.body
-    }).done(function(data) {
-      $( '.modal-content' ).html( data );
-    });
+      var path='{{ path('user_new') }}';
+      console.log(path);
+      $.ajax({
+        url: path,
+        context: document.body
+      }).done(function(data) {
+        $( '.modal-content' ).html( data );
+      });
+
+    
+
+
     </script>
 {% endblock %}

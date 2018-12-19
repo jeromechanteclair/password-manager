@@ -7,4 +7,62 @@
     {{ include('user/_form.html.twig') }}
 
     <a href="{{ path('user_index') }}">back to list</a>
+
+    <script>
+
+
+      $(document).on("submit", "#adduserForm", function(e){
+          e.preventDefault();
+          return  false;
+      });
+
+      $(document).on("click", "#adduser", function(e){
+      e.preventDefault();
+      var form = $("#adduserForm");
+
+      /* you could make use of html5 form validation
+      if(!form.checkValidity()){
+
+        // To show the native error hints you can fake a click() on the actual submit button
+        // which must not be the button #mySubmitButton and shall be hidden with display:none;
+        //  example:
+        //  <button type="button" id="#mySubmitButton" class"btn btn-default" > Save </button>
+        //  <button type="submit" id="#myHIDDENSubmitButton" style="display:none;"></button>
+        //
+        $("#myHIDDENSubmitButton").click();
+        return false;
+      }
+*/
+      // get the properties and values from the form
+      var form_data = form.serialize();
+console.log(form_data)
+      // always makes sense to signal user that something is happening
+      //$('#loadingSpinner').show();
+
+      // simple approach avoid submitting multiple times
+      $('#adduser').attr("disabled",true);
+
+      // the actual request to your newAction
+      $.ajax({
+        url: path,
+        type: 'POST',
+        dataType: 'json',
+        data: form_data,
+        success:function(data){
+
+          // handling the response data from the controller
+          if(data.status == 'error'){
+            console.log("[API] ERROR: "+data.message);
+          }
+          if(data.status == 'success'){
+            console.log("[API] SUCCESS: "+data.message);
+          }
+
+          // signal to user the action is done
+        //  $('#loadingSpinner').hide();
+          $('#adduser').attr("disabled",false);
+        }
+      });
+    });
+  </script>
 {% endblock %}

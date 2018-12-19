@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+ use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @Route("/user")
@@ -31,15 +32,29 @@ class UserController extends Controller
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
+        $status = "error";
+        $message = "";
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $user->setEnabled(1);
+            $user->setPlainPassword('dd');
             $user->addRole('ROLE_USER');
-            $em->flush();
+            try {
+                $em->flush();
+                $status = "success";
+                $message = "new user saved";
+            } catch (\Exception $e) {
+                $message = $e->getMessage();
+            }
 
-            return $this->redirectToRoute('user_index');
+            $response = array(
+            'status' => $status,
+            'message' => $message
+        );
+
+            return new JsonResponse($response);
         }
 
         return $this->render('user/new.html.twig', [
