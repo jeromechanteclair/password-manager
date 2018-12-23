@@ -1,0 +1,55 @@
+{% block title %}Add members to crew{% endblock %}
+{% block search %}
+<br>
+
+
+<input  type="search" value="search for users" onkeyup="showMe(this)">
+
+<div id=users_results>
+</div>
+{% endblock %}
+<script>
+
+var url='{{ path('user_search') }}';
+var users;
+var results=[];
+var currentId='{{currentId}}';
+console.log(currentId);
+  $.ajax({
+    dataType: "json",
+    url:url,
+    success: function(data){
+      return users = data;
+    }
+  });
+
+
+
+  function showMe(e) {
+    results = [];
+    if(e.value.length>2){
+      for(let i in users){
+          if(users[i]['username'].includes(e.value)){
+              results.push(users[i]);
+          }
+        }
+      }
+    displayResults();
+  }
+
+  function displayResults(){
+      $('#users_results').html('');
+      for(let i in results){
+        $('#users_results').append('<div  class="userItem" >\
+        <input type="checkbox" id="crew_users_'+results[i]['id']+'" name="crew[users][]" value="'+results[i]['id']+'"><label for="crew_users_'+results[i]['id']+'">'+results[i]['username']+'</label>\
+        <select><option value="test" data-crew="'+currentId+'" data-user="'+results[i]['id']+'">test</option>\
+        <option value="other" data-crew="'+currentId+'" data-user="'+results[i]['id']+'">other</option></select></div>');
+    }
+  }
+  $(document).on('click','#users_results .userItem',function(){
+    $(this).appendTo($('#crew_users'));
+  })
+
+
+
+</script>

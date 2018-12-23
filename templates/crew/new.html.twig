@@ -3,13 +3,16 @@
 {% block title %}New Crew{% endblock %}
 
 {% block body %}
+
+    {{ include('user/search_form.html.twig') }}
+
     <h1>Create new Crew</h1>
 
     {{ form_start(form) }}
 
-    <button class="btn">{{ button_label|default('Save') }}</button>
 
 
+    <div class="selected"></div>
     {{ form_end(form) }}
     <button id="myBtn">Open Modal</button>
 
@@ -26,10 +29,13 @@
     <div id="newUser">
 
     </div>
-    <a href="{{ path('password_index') }}">back to list</a>
+    <!--a href="{{ path('password_index') }}">back to list</a-->
     <script>
+
+
+    $('#crew_users').html('');
       var path='{{ path('user_new') }}';
-      console.log(path);
+    //  console.log(path);
       $.ajax({
         url: path,
         context: document.body
@@ -37,8 +43,25 @@
         $( '.modal-content' ).html( data );
       });
 
-    
+      $(document).on('click','#crew_save',function(e){
+        e.preventDefault();
 
+        $('#crew_users option:selected').each(function(){
+          let val =$(this).val();
+          let user= $(this).attr('data-user');
+          let crew = $(this).attr('data-crew')-1;
+console.log(val,user,crew)
+
+          $.ajax({
+           type:'POST',
+           url:'/crew/'+crew+'/'+user+'/'+val+'/role/add',
+           success:function(data) {
+             alert(data);
+           }
+         });
+        })
+
+})
 
     </script>
 {% endblock %}

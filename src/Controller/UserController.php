@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
  use Symfony\Component\HttpFoundation\JsonResponse;
+ use JMS\Serializer\SerializationContext;
+
 
 /**
  * @Route("/user")
@@ -22,6 +24,33 @@ class UserController extends Controller
     public function index(UserRepository $userRepository): Response
     {
         return $this->render('user/index.html.twig', ['users' => $userRepository->findAll()]);
+    }
+
+    /**
+     * @Route("/list", name="user_search", methods="GET")
+     */
+    public function searchUsers(UserRepository $userRepository): Response
+    {
+        $users = $userRepository->findAll();
+        $currentLoggedUser = $this->get('security.token_storage')->getToken()->getUser();
+
+        function unsetValue(array $array, $value, $strict = TRUE)
+        {
+            if(($key = array_search($value, $array, $strict)) !== FALSE) {
+                unset($array[$key]);
+            }
+            return $array;
+        }
+
+        // unset currentLoggedUser from List
+        $users =  unsetValue($users,$currentLoggedUser);
+        //get list of Users, return Json
+        $data = $this->get('jms_serializer')->serialize($users, 'json', SerializationContext::create()->setGroups(array('list')));
+        $response = new Response($data);
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+
     }
 
     /**

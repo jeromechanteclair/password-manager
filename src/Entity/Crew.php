@@ -5,6 +5,8 @@ use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use JMS\Serializer\Annotation as Serializer;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CrewRepository")
@@ -15,6 +17,7 @@ class Crew
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Serializer\Groups({"list"})
      */
     private $id;
 
@@ -24,13 +27,21 @@ class Crew
     private $name;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CrewRole", mappedBy="User", orphanRemoval=true)
+     */
+    private $CrewRoles;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\user", inversedBy="crews")
      */
     private $users;
 
+
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+
     }
 
 
@@ -76,4 +87,6 @@ class Crew
 
         return $this;
     }
+
+
 }

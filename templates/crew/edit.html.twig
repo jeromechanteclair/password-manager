@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Crew{% endblock %}
+
+{% block body %}
+
+    {{ include('user/search_form.html.twig') }}
+
+    <h1>Create new Crew</h1>
+
+    {{ form_start(form) }}
+
+
+
+    <div class="selected"></div>
+    {{ form_end(form) }}
+    <button id="myBtn">Open Modal</button>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Some text in the Modal..</p>
+      </div>
+
+    </div>
+    <div id="newUser">
+
+    </div>
+    <!--a href="{{ path('password_index') }}">back to list</a-->
+    <script>
+  
+      var path='{{ path('user_new') }}';
+    //  console.log(path);
+      $.ajax({
+        url: path,
+        context: document.body
+      }).done(function(data) {
+        $( '.modal-content' ).html( data );
+      });
+
+
+
+
+    </script>
+{% endblock %}

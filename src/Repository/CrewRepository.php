@@ -18,6 +18,22 @@ class CrewRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Crew::class);
     }
+    /**
+     * Repository method for finding the newest inserted
+     * entry inside the database. Will return the latest
+     * entry when one is existent, otherwise will return
+     * null.
+      * @return Crew[] Returns an array of Crew objects
+     */
+    public function findLastInserted()
+    {
+        return $this
+            ->createQueryBuilder("e")
+            ->orderBy("e.id", "DESC")
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 
     // /**
     //  * @return Crew[] Returns an array of Crew objects
