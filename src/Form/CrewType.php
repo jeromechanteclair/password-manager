@@ -19,7 +19,7 @@ class CrewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name',TextType::class,array('attr'=>['autocomplete' => 'off']))
+            ->add('name',TextType::class,array('attr'=>['autocomplete' => 'off'],))
             ->add('users', EntityType::class, array(
               'class' => User::class,
               'expanded'     => true,

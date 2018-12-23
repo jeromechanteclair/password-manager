@@ -1,11 +1,10 @@
-{% block title %}Add members to crew{% endblock %}
+
 {% block search %}
-<br>
-
-
-<input  type="search" value="search for users" onkeyup="showMe(this)">
-
-<div id=users_results>
+<div id="searchform">
+<input  type="search" placeholder="Research users..." onkeyup="showMe(this)">
+  <div id=users_results>
+    <div id="createNew" class="hide"></div>
+  </div>
 </div>
 {% endblock %}
 <script>
@@ -27,29 +26,66 @@ console.log(currentId);
 
   function showMe(e) {
     results = [];
+    selected =[];
     if(e.value.length>2){
+
+      $('#crew_users .userItem input').each(function(){
+        selected.push($(this).val());
+
+      })
       for(let i in users){
-          if(users[i]['username'].includes(e.value)){
-              results.push(users[i]);
+        if( users[i]['username'].includes(e.value)){
+            results.push(users[i]);
+        }
+      }
+    }
+
+      for (let x in selected){
+
+        for(let i in results){
+          if(results[i]['id']=== Number(selected[x])){
+            results.splice(i,1)
           }
         }
       }
+
     displayResults();
   }
 
   function displayResults(){
-      $('#users_results').html('');
+    console.log(results);
+    if(results === undefined || results.length == 0 && $('#searchform input[type="search"]').val().length>2){
+
+      $('#createNew').removeClass('hide');
+    }
+    else{
+      $('#createNew').addClass('hide');
+    }
+  $('#users_results .userItem').remove();
+
       for(let i in results){
-        $('#users_results').append('<div  class="userItem" >\
-        <input type="checkbox" id="crew_users_'+results[i]['id']+'" name="crew[users][]" value="'+results[i]['id']+'"><label for="crew_users_'+results[i]['id']+'">'+results[i]['username']+'</label>\
+        $('#users_results').append('<div class="userItem" >\
+        <input type="checkbox" id="crew_users_'+results[i]['id']+'" name="crew[users][]" value="'+results[i]['id']+'">\
+        <span><label for="crew_users_'+results[i]['id']+'">'+results[i]['username']+'</label>\
+        <label for="crew_users_'+results[i]['id']+'">'+results[i]['email']+'</label></span>\
         <select><option value="test" data-crew="'+currentId+'" data-user="'+results[i]['id']+'">test</option>\
         <option value="other" data-crew="'+currentId+'" data-user="'+results[i]['id']+'">other</option></select></div>');
     }
   }
-  $(document).on('click','#users_results .userItem',function(){
+  $(document).on('click','#users_results .userItem',function(e){
+    e.preventDefault();
+    $('#searchform input[type="search"]').val('');
     $(this).appendTo($('#crew_users'));
+    $('#users_results .userItem').remove();
   })
-
+  $(document).on('click','#crew_users .userItem',function(e){
+    e.preventDefault();
+   $(this).remove();
+  })
+  $(document).on('click','.userItem select',function(e){
+   // Do something
+   e.stopPropagation();
+});
 
 
 </script>

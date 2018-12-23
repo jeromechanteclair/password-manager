@@ -2,7 +2,7 @@ form {
   padding: 20px;
   display: flex;
   flex-flow: column;
-  max-width: 480px;
+
   margin: 0 auto;
 
   label {
@@ -120,4 +120,116 @@ form {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+#searchform{
+  width:350px;
+  margin: 0 auto;
+  input[type='search']{
+    width: 100%;
+    margin-bottom: 0px;
+    padding: 10px;
+  }
+  #users_results{
+    #adduserForm{
+      padding: 20px 0;
+      input{
+        margin-bottom: 0px;
+        padding: 10px;
+      }
+      button{
+        background-color: #eeeeee;
+        border:1px solid black;
+        color:black;
+      }
+    }
+    .hide{
+      display: none;
+    }
+    .userItem{
+      display: flex;
+      align-items: center;
+      text-align: left;
+      margin: 10px 0;
+      border:1px solid #eeeeee;
+      padding: 10px;
+      &:hover{
+        background:black;
+        color:white;
+
+      }
+
+      span{
+        cursor: pointer;
+        padding-left: 10px;
+        display: flex;
+        flex-flow: column;
+      }
+      select{display: none;}
+    }
+  }
+}
+#form_crew{
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: left;
+  display: flex;
+  flex-flow: row;
+  padding: 0px;
+  justify-content: space-between;
+  >div{
+    width: 350px;
+  
+  }
+    button[type='submit']{
+      width: 100%;
+      margin-top: 10px;
+    }
+  input[type='text']{
+
+
+    padding: 10px;
+  }
+  .heading{
+    background:#eeeeee;
+    border:1px solid #eeeeee;
+    padding: 10px;
+  }
+}
+#crew_users{
+  max-width: 550px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: left;
+    .userItem{
+      display: flex;
+      align-items: center;
+      text-align: left;
+      margin: 10px 0;
+      border:1px solid #eeeeee;
+      padding: 10px;
+      &:hover{
+        background:black;
+        color:white;
+
+      }
+      input[type="checkbox"]{
+        margin: 0;
+      }
+      span{
+        label{
+          margin-bottom: 0px;
+          text-transform: none;
+          font-size: 14px;
+        }
+        text-align: left;
+        align-items: flex-start;
+        cursor: pointer;
+        padding-left: 10px;
+        flex-grow: 2;
+        display: flex;
+        flex-flow: column;
+      }
+
+    }
+
 }

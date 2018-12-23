@@ -4,28 +4,32 @@
 
 {% block body %}
 
-    {{ include('user/search_form.html.twig') }}
+
 
     <h1>Create new Crew</h1>
 
-    {{ form_start(form) }}
-
-
-
-    <div class="selected"></div>
-    {{ form_end(form) }}
-    <button id="myBtn">Open Modal</button>
-
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
-
-      <!-- Modal content -->
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>Some text in the Modal..</p>
+    {{ form_start(form,{'attr': {'id': 'form_crew'}}) }}
+    <div>
+      <div class="heading">
+      {{ form_label(form.name) }}
       </div>
-
+      {{ form_widget(form.name,{'attr': {'placeholder': 'Set name for crew...'}}) }}
+      <div class="selected"></div>
+      <div class="heading">
+       {{ form_label(form.users) }}
+      </div>
+      {{ form_widget(form.users) }}
+        {{ form_widget(form.save) }}
     </div>
+    <div>
+    <div class="heading">
+  <label>Add members to crew</label>
+    </div>
+
+    {{ include('user/search_form.html.twig') }}
+  </div>
+    {{ form_end(form) }}
+
     <div id="newUser">
 
     </div>
@@ -40,7 +44,7 @@
         url: path,
         context: document.body
       }).done(function(data) {
-        $( '.modal-content' ).html( data );
+        $( '#createNew' ).html( data );
       });
 
       $(document).on('click','#crew_save',function(e){
@@ -50,7 +54,7 @@
           let val =$(this).val();
           let user= $(this).attr('data-user');
           let crew = $(this).attr('data-crew')-1;
-console.log(val,user,crew)
+          console.log(val,user,crew)
 
           $.ajax({
            type:'POST',
