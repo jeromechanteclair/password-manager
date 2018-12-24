@@ -63,24 +63,33 @@ class UserController extends Controller
         $form->handleRequest($request);
         $status = "error";
         $message = "";
+        $userId ="";
+        $username ="";
+        $useremail="";
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $user->setEnabled(1);
             $user->setPlainPassword('dd');
-            $user->addRole('ROLE_USER');
+            $user->addRole('ROLE_MEMBER');
             try {
                 $em->flush();
                 $status = "success";
                 $message = "new user saved";
+                $userId = $user->getId();
+                $username =$user->getUsername();
+                $useremail=$user->getEmail();
             } catch (\Exception $e) {
                 $message = $e->getMessage();
             }
 
             $response = array(
             'status' => $status,
-            'message' => $message
+            'message' => $message,
+            'userId'=> $userId,
+            "username"=>$username,
+            'useremail'=>$useremail
         );
 
             return new JsonResponse($response);

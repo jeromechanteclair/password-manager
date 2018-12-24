@@ -1,9 +1,9 @@
 {{ form_start(form,{'attr': {'id': 'adduserForm'}}) }}
 
   <div class="heading">
-<label>Add new Member</label>
+<label>Create new member</label>
 </div>
-{{ form_widget(form.username,{'attr': {'placeholder': 'username'}}) }}
+{{ form_widget(form.username,{'attr': {'placeholder': 'Username'}}) }}
   {{ form_widget(form.email,{'attr': {'placeholder': 'Email'}}) }}
 
   <button class="btn" id='adduser'>{{ button_label|default('+') }}</button>

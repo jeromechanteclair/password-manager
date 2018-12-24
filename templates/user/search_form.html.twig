@@ -1,7 +1,7 @@
 
 {% block search %}
 <div id="searchform">
-<input  type="search" placeholder="Research users..." onkeyup="showMe(this)">
+<input  type="search" placeholder="Search for users" onkeyup="showMe(this)">
   <div id=users_results>
     <div id="createNew" class="hide"></div>
   </div>
@@ -13,7 +13,7 @@ var url='{{ path('user_search') }}';
 var users;
 var results=[];
 var currentId='{{currentId}}';
-console.log(currentId);
+
   $.ajax({
     dataType: "json",
     url:url,
@@ -53,7 +53,7 @@ console.log(currentId);
   }
 
   function displayResults(){
-    console.log(results);
+
     if(results === undefined || results.length == 0 && $('#searchform input[type="search"]').val().length>2){
 
       $('#createNew').removeClass('hide');
@@ -65,7 +65,7 @@ console.log(currentId);
 
       for(let i in results){
         $('#users_results').append('<div class="userItem" >\
-        <input type="checkbox" id="crew_users_'+results[i]['id']+'" name="crew[users][]" value="'+results[i]['id']+'">\
+        <input type="checkbox" id="crew_users_'+results[i]['id']+'" name="crew[users][]" value="'+results[i]['id']+'" checked>\
         <span><label for="crew_users_'+results[i]['id']+'">'+results[i]['username']+'</label>\
         <label for="crew_users_'+results[i]['id']+'">'+results[i]['email']+'</label></span>\
         <select><option value="test" data-crew="'+currentId+'" data-user="'+results[i]['id']+'">test</option>\

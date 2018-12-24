@@ -9,63 +9,72 @@
     <h1>Create new Crew</h1>
 
     {{ form_start(form,{'attr': {'id': 'form_crew'}}) }}
-    <div>
+
       <div class="heading">
       {{ form_label(form.name) }}
       </div>
-      {{ form_widget(form.name,{'attr': {'placeholder': 'Set name for crew...'}}) }}
-      <div class="selected"></div>
-      <div class="heading">
-       {{ form_label(form.users) }}
-      </div>
-      {{ form_widget(form.users) }}
-        {{ form_widget(form.save) }}
-    </div>
-    <div>
+    {{ form_widget(form.name,{'attr': {'placeholder': 'Set name for crew...'}}) }}
+
+
+
     <div class="heading">
-  <label>Add members to crew</label>
+      <label>Add members to crew</label>
     </div>
 
     {{ include('user/search_form.html.twig') }}
-  </div>
-    {{ form_end(form) }}
+    <div class="selected"></div>
 
-    <div id="newUser">
+    {{ form_widget(form.users)}}
 
-    </div>
-    <!--a href="{{ path('password_index') }}">back to list</a-->
-    <script>
+    {{ form_widget(form.save)}}
+    
+    {{ form_end(form)}}
+
+    <div id="newUser"></div>
+
+<script>
 
 
-    $('#crew_users').html('');
-      var path='{{ path('user_new') }}';
-    //  console.log(path);
-      $.ajax({
-        url: path,
-        context: document.body
-      }).done(function(data) {
-        $( '#createNew' ).html( data );
-      });
+$('#crew_users').html('');
 
-      $(document).on('click','#crew_save',function(e){
-        e.preventDefault();
+var path='{{ path('user_new') }}';
+$.ajax({
+  url: path,
+  context: document.body
+  }).done(function(data) {
+  $( '#createNew' ).html( data );
+});
 
+//--- On Save function submit---//
+$(document).on('click','#crew_save',function(e){
+ e.preventDefault();
+ var formCrew = $("#form_crew");
+ var formCrew_data = formCrew.serialize();
+ console.log(formCrew_data);
+ $.ajax({
+   url: '{{ path('crew_new') }}',
+   type: 'POST',
+   dataType: 'json',
+   data: formCrew_data,
+   success:function(data){
+      if(data.status == 'success'){
+        console.log(data.crewId)
+        // Register role for every user
         $('#crew_users option:selected').each(function(){
           let val =$(this).val();
           let user= $(this).attr('data-user');
-          let crew = $(this).attr('data-crew')-1;
-          console.log(val,user,crew)
-
+          let crew = $(this).attr('data-crew');
           $.ajax({
            type:'POST',
            url:'/crew/'+crew+'/'+user+'/'+val+'/role/add',
            success:function(data) {
-             alert(data);
+             console.log(data);
            }
          });
         })
+      }
+   }})
+ })
 
-})
-
-    </script>
+</script>
 {% endblock %}

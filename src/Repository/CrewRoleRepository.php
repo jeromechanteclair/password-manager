@@ -19,22 +19,24 @@ class CrewRoleRepository extends ServiceEntityRepository
         parent::__construct($registry, CrewRole::class);
     }
 
-    // /**
-    //  * @return CrewRole[] Returns an array of CrewRole objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+     * @return CrewRole[] Returns an array of CrewRole objects
+      */
+
+    public function findduplicate($crew,$user)
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('c.crew = :crew')
+            ->andWhere('c.User = :user')
+            ->setParameter('crew', $crew)
+            ->setParameter('user', $user)
             ->orderBy('c.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?CrewRole

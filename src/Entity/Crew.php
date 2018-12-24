@@ -36,6 +36,12 @@ class Crew
      */
     private $users;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\user")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $owner;
+
 
 
     public function __construct()
@@ -84,6 +90,18 @@ class Crew
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
         }
+
+        return $this;
+    }
+
+    public function getOwner(): ?user
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?user $owner): self
+    {
+        $this->owner = $owner;
 
         return $this;
     }

@@ -4,45 +4,116 @@
 
 {% block body %}
 
-    {{ include('user/search_form.html.twig') }}
-
-    <h1>Create new Crew</h1>
-
-    {{ form_start(form) }}
 
 
+    <h1>Manage {{crew.name}}</h1>
 
-    <div class="selected"></div>
-    {{ form_end(form) }}
-    <button id="myBtn">Open Modal</button>
 
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
-
-      <!-- Modal content -->
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>Some text in the Modal..</p>
+<form name="crew" method="post" id="form_crew">
+      <div class="heading">
+      {{ form_label(form.name) }}
       </div>
+    {{ form_widget(form.name,{'attr': {'placeholder': 'Set name for crew...'}}) }}
+
+
+    <div class="heading">
+      <label>Add members to crew</label>
+    </div>
+
+    {{ include('user/search_form.html.twig') }}
+    <div class="selected">
 
     </div>
+
+  <div id="crew_users">
+      {% for user in users %}
+      <div class="userItem" >
+      <input type="checkbox" id="crew_users_{{ user.id|e }}" name="crew[users][]" value="{{ user.id|e }}" checked>
+      <span><label for="crew_users_{{ user.id|e }}">{{ user.username|e }}</label>
+      <label for="crew_users_{{ user.id|e }}">{{ user.email|e }}</label></span>
+    <select>
+        {% for role in user.CrewRoles %}
+          {% if ( role.crew.id) == (currentId)  %}
+
+            {% if ( role.name) == 'test'  %}
+            <option value="test" data-crew="{{ currentId }}" data-user="{{ user.id|e }}" selected>test</option>
+            {% else %}
+            <option value="test" data-crew="{{ currentId }}" data-user="{{ user.id|e }}">test</option>
+            {% endif %}
+            {% if ( role.name) == 'other'  %}
+                <option value="other" data-crew="{{ currentId }}" data-user="{{ user.id|e }}" selected>other</option>
+            {% else %}
+                <option value="other" data-crew="{{ currentId }}" data-user="{{ user.id|e }}">other</option>
+            {% endif %}
+
+
+
+
+
+
+
+          {% endif %}
+        {% endfor %}
+
+
+
+      </select>
+    </div>
+
+      {% endfor %}
+
+  </div>
+{{ form_errors(form) }}
+    {{ form_widget(form.save) }}
+      {{ form_widget(form._token) }}
+  </form>
+
     <div id="newUser">
 
     </div>
     <!--a href="{{ path('password_index') }}">back to list</a-->
     <script>
-  
+
+  //
       var path='{{ path('user_new') }}';
     //  console.log(path);
       $.ajax({
         url: path,
         context: document.body
       }).done(function(data) {
-        $( '.modal-content' ).html( data );
+        $( '#createNew' ).html( data );
       });
 
+      $(document).on('click','#crew_save',function(e){
+      e.preventDefault();
+       var formCrew = $("#form_crew");
+       var formnewCrew_data = formCrew.serialize();
+console.log(formnewCrew_data);
+       $.ajax({
+         url: '{{ path('crew_edit',{'id':currentId}) }}',
+         type: 'POST',
+         dataType: 'json',
+         data: formnewCrew_data,
 
-
+         success:function(data){
+            if(data.status == 'success'){
+              console.log(formnewCrew_data)
+              // Register role for every user
+              $('#crew_users option:selected').each(function(){
+                let val =$(this).val();
+                let user= $(this).attr('data-user');
+                let crew = $(this).attr('data-crew');
+                $.ajax({
+                 type:'POST',
+                 url:'/crew/'+crew+'/'+user+'/'+val+'/role/add',
+                 success:function(data) {
+                   console.log(data);
+                 }
+               });
+              })
+            }
+         }})
+       })
 
     </script>
 {% endblock %}
