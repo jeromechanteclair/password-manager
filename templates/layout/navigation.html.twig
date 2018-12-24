@@ -6,7 +6,7 @@
   <nav>
     {% if app.user %}
     <div class="nav-left">
-        <img class="logo_small" src=" {{asset('images/lock.gif')}}">
+        <img class="logo_small" src=" {{asset('images/tourmanager.png')}}">
       <div class="dropdown"><a href="/">Bonjour <b>{{ app.user.username }}</b> </a>
         <div>
         <a href="{{ path('user_show',{'id': app.user.id}) }}">Mes informations</a>
@@ -17,11 +17,16 @@
 
     </div>
     <div class="nav-center">
-        <a href="{{ path('password_index') }}">Mes mots de passe</a>
+
+    {% for crew in app.user.crews %}
+    <a href="/crew/{{  crew.id }}">  {{crew.name }}</a>
+    {% endfor %}
+
+
       </div>
     {% endif %}
     <div class="nav-right">
-      <a href="{{ path('password_new') }}"><button>AJOUTER UN NOUVEAU</button></a>
+
     </div>
   </nav>
 </header>

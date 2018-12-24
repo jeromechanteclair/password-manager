@@ -27,7 +27,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/list", name="user_search", methods="GET")
+     * @Route("/search", name="user_search", methods="GET")
      */
     public function searchUsers(UserRepository $userRepository): Response
     {

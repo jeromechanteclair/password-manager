@@ -15,14 +15,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
  use Symfony\Component\HttpFoundation\JsonResponse;
 class CrewController extends Controller
 {
-    /**
-     * @Route("/crew/list", name="crew_list", methods="GET")
-     */
-    public function index()
+  /**
+   * @Route("/crew/{id}", name="crew_show", methods="GET")
+   */
+    public function show(Crew $crew): Response
     {
-        return $this->render('crew/index.html.twig', [
-            'controller_name' => 'CrewController',
-        ]);
+        return $this->render('crew/index.html.twig', ['crew' => $crew]);
     }
 
     /**
@@ -62,6 +60,7 @@ class CrewController extends Controller
         return $this->render('crew/new.html.twig', [
             'currentId'=>$currentId,
             'form' => $form->createView(),
+            'owner'=> $this->get('security.token_storage')->getToken()->getUser()
         ]);
     }
 

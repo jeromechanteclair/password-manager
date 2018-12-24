@@ -8,7 +8,8 @@
 
     <h1>Create new Crew</h1>
 
-    {{ form_start(form,{'attr': {'id': 'form_crew'}}) }}
+
+<form name="crew" method="post" id="form_crew">
 
       <div class="heading">
       {{ form_label(form.name) }}
@@ -24,18 +25,26 @@
     {{ include('user/search_form.html.twig') }}
     <div class="selected"></div>
 
-    {{ form_widget(form.users)}}
+    <div id="crew_users">
+      <div class="userItemadmin" >
+      <input type="checkbox" id="crew_users_{{owner.id}}" name="crew[users][]" value="{{owner.id}}" checked>
+      <span><label for="crew_users_{{owner.id}}">{{owner.username}}</label>
+      <label for="crew_users_{{owner.id}}">{{owner.email}}</label></span>
+  <p>Owner</p></div>
+
+
+    </div>
 
     {{ form_widget(form.save)}}
-    
-    {{ form_end(form)}}
+{{ form_widget(form._token) }}
+  </form>
 
     <div id="newUser"></div>
 
 <script>
 
 
-$('#crew_users').html('');
+
 
 var path='{{ path('user_new') }}';
 $.ajax({
@@ -50,7 +59,8 @@ $(document).on('click','#crew_save',function(e){
  e.preventDefault();
  var formCrew = $("#form_crew");
  var formCrew_data = formCrew.serialize();
- console.log(formCrew_data);
+ var owner ='{{owner}}'
+ console.log(owner);
  $.ajax({
    url: '{{ path('crew_new') }}',
    type: 'POST',
