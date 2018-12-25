@@ -139,11 +139,24 @@ form {
 #searchform {
   width:100%;
   margin: 0 auto;
+  .search-input{
+    position: relative;
 
+      .icon-search{
+        position: absolute;
+        top:10px;
+        left: 5px;
+        img{
+          height: 18px;
+        }
+    }
+  }
   input[type='search'] {
+
     width: 100%;
     margin-bottom: 0;
     padding: 10px 0;
+      padding-left: 30px;
   }
 
   #users_results {
@@ -154,6 +167,7 @@ form {
 
         margin-bottom: 0;
         padding: 10px 0;
+        padding-left: 30px;
       }
 
 
@@ -220,11 +234,14 @@ textarea:focus, input:focus{
     background: black;
   }
 
-  input[type='text'] {
+#crew_name {
   padding: 10px 0;
     width: 100%;
   }
-
+    input[type='text'],input[type="email"] {
+    padding: 10px 0;
+      width: 610px;
+    }
   .heading {
   color:black;
 

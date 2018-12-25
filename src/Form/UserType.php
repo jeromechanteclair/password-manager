@@ -19,6 +19,9 @@ class UserType extends AbstractType
             ->add('username',TextType::class, array(
               // 'empty_data' => 'John Doe',
             ))
+            ->add('phone',TextType::class, array(
+              // 'empty_data' => 'John Doe',
+            ))
             ->add('email',EmailType::class, array(
 
             ))

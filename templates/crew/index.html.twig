@@ -3,6 +3,30 @@
 {% block title %}Hello {{ crew.name }}!{% endblock %}
 
 {% block body %}
-<h1> {{ crew.name }}</h1>
-<a href='{{ path('crew_edit',{'id':crew.id}) }}'>edit</a>
+<aside id="crew_infos">
+  <div class="crew_infos_header">
+    <h1> {{ crew.name|upper }}</h1>
+    <a href='{{ path('crew_edit',{'id':crew.id}) }}'><button>manage</button></a>
+  </div>
+  <div class="crew_users">
+    {% for user in crew.users %}
+    {% if (app.user.username) != (user.username) %}
+    <div class="crew_user-item">
+
+      <p>{{user.username|capitalize}}</p>
+
+      <a href="mailto:{{user.email}}">  <span class="icon">  <img class="logo_small" src=" {{asset('images/email.svg')}}"></span></a>
+      <a href="tel:{{user.phone}}">  <span class="icon">  <img class="logo_small" src=" {{asset('images/phone.svg')}}"></span></a>
+
+
+      <!--a href="{{ path('user_edit',{'id':user.id}) }}">edit</a-->
+
+    </div>
+    {% endif %}
+
+    {% endfor %}
+  </div>
+  </aside>
+  <main>
+  </main>
 {% endblock %}

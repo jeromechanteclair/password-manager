@@ -1,7 +1,9 @@
 
 {% block search %}
 <div id="searchform">
-<input  type="search" placeholder="Search for users" onkeyup="showMe(this)">
+  <div class="search-input">
+<input type="search" placeholder="Search for users" onkeyup="showMe(this)"> <span class="icon-search">  <img class="logo_small" src=" {{asset('images/search.svg')}}"></span>
+</div>
   <div id=users_results>
     <div id="createNew" class="hide"></div>
   </div>
@@ -57,9 +59,13 @@ var currentId='{{currentId}}';
     if(results === undefined || results.length == 0 && $('#searchform input[type="search"]').val().length>2){
 
       $('#createNew').removeClass('hide');
+
+        $('#searchform input[type="search"]').css('color', 'red');
+
     }
     else{
       $('#createNew').addClass('hide');
+          $('#searchform input[type="search"]').css('color', 'black');
     }
   $('#users_results .userItem').remove();
 

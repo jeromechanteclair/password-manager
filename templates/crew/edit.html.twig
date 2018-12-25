@@ -6,73 +6,58 @@
 
 
 
-    <h1>Manage {{crew.name}}</h1>
-
+<h1>Manage {{crew.name}}</h1>
 
 <form name="crew" method="post" id="form_crew">
-      <div class="heading">
-      {{ form_label(form.name) }}
-      </div>
-    {{ form_widget(form.name,{'attr': {'placeholder': 'Set name for crew...'}}) }}
-
-
-    <div class="heading">
-      <label>Add members to crew</label>
-    </div>
-
-    {{ include('user/search_form.html.twig') }}
-    <div class="selected">
-
-    </div>
-
+  <div class="heading">
+    {{ form_label(form.name) }}
+  </div>
+  {{ form_widget(form.name,{'attr': {'placeholder': 'Set name for crew...'}}) }}
+  <div class="heading">
+    <label>Add members to crew</label>
+  </div>
+  {{ include('user/search_form.html.twig') }}
+  <div class="selected"></div>
   <div id="crew_users">
       {% for user in users %}
-      <div class="userItem" >
-      <input type="checkbox" id="crew_users_{{ user.id|e }}" name="crew[users][]" value="{{ user.id|e }}" checked>
-      <span><label for="crew_users_{{ user.id|e }}">{{ user.username|e }}</label>
-      <label for="crew_users_{{ user.id|e }}">{{ user.email|e }}</label></span>
-    <select>
-        {% for role in user.CrewRoles %}
-          {% if ( role.crew.id) == (currentId)  %}
-
-            {% if ( role.name) == 'test'  %}
-            <option value="test" data-crew="{{ currentId }}" data-user="{{ user.id|e }}" selected>test</option>
-            {% else %}
-            <option value="test" data-crew="{{ currentId }}" data-user="{{ user.id|e }}">test</option>
-            {% endif %}
-            {% if ( role.name) == 'other'  %}
-                <option value="other" data-crew="{{ currentId }}" data-user="{{ user.id|e }}" selected>other</option>
-            {% else %}
-                <option value="other" data-crew="{{ currentId }}" data-user="{{ user.id|e }}">other</option>
-            {% endif %}
-
-
-
-
-
-
-
+        {% if ( user) == (owner)  %}
+          <div class="userItemadmin" >
+          {% else %}
+          <div class="userItem" >
           {% endif %}
-        {% endfor %}
-
-
-
-      </select>
-    </div>
-
+            <input type="checkbox" id="crew_users_{{ user.id|e }}" name="crew[users][]" value="{{ user.id|e }}" checked>
+            <span><label for="crew_users_{{ user.id|e }}">{{ user.username|e }}</label>
+            <label for="crew_users_{{ user.id|e }}">{{ user.email|e }}</label></span>
+            {% if ( user) == (owner)  %}
+              <p>owner</p>
+            {% else %}
+              <select>
+                {% for role in user.CrewRoles %}
+                  {% if ( role.crew.id) == (currentId)  %}
+                    {% if ( role.name) == 'test'  %}
+                    <option value="test" data-crew="{{ currentId }}" data-user="{{ user.id|e }}" selected>test</option>
+                    {% else %}
+                    <option value="test" data-crew="{{ currentId }}" data-user="{{ user.id|e }}">test</option>
+                    {% endif %}
+                    {% if ( role.name) == 'other'  %}
+                        <option value="other" data-crew="{{ currentId }}" data-user="{{ user.id|e }}" selected>other</option>
+                    {% else %}
+                        <option value="other" data-crew="{{ currentId }}" data-user="{{ user.id|e }}">other</option>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+              </select>
+            {% endif %}
+          </div>
       {% endfor %}
-
   </div>
-{{ form_errors(form) }}
-    {{ form_widget(form.save) }}
-      {{ form_widget(form._token) }}
-  </form>
-
-    <div id="newUser">
-
-    </div>
-    <!--a href="{{ path('password_index') }}">back to list</a-->
-    <script>
+  {{ form_errors(form) }}
+  {{ form_widget(form.save) }}
+  {{ form_widget(form._token) }}
+</form>
+<div id="newUser"></div>
+  <a href='{{ path('crew_display',{'id':currentId}) }}'>back to crew</a>
+<script>
 
   //
       var path='{{ path('user_new') }}';
@@ -88,7 +73,7 @@
       e.preventDefault();
        var formCrew = $("#form_crew");
        var formnewCrew_data = formCrew.serialize();
-console.log(formnewCrew_data);
+
        $.ajax({
          url: '{{ path('crew_edit',{'id':currentId}) }}',
          type: 'POST',

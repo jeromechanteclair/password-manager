@@ -15,18 +15,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
  use Symfony\Component\HttpFoundation\JsonResponse;
 class CrewController extends Controller
 {
-  /**
-   * @Route("/crew/{id}", name="crew_show", methods="GET")
-   */
-    public function show(Crew $crew): Response
-    {
-        return $this->render('crew/index.html.twig', ['crew' => $crew]);
-    }
+
 
     /**
      * @Route("/crew/new", name="crew_new", methods="GET|POST")
      */
-    public function new(CrewRepository $crewRepository,Request $request): Response
+    public function newCrew(CrewRepository $crewRepository,Request $request): Response
     {
 
         if($crewRepository->findLastInserted() === null){
@@ -92,8 +86,16 @@ class CrewController extends Controller
             'crew' => $crew,
             'users'=>$crew->getUsers(),
             'form' => $form->createView(),
-            'currentId' => $crew->getId()
+            'currentId' => $crew->getId(),
+            'owner'=> $this->get('security.token_storage')->getToken()->getUser()
         ]);
     }
+    /**
+     * @Route("crew/{id}", name="crew_display", methods="GET")
+     */
+      public function showcrew(Crew $crew): Response
+      {
+          return $this->render('crew/index.html.twig', ['crew' => $crew]);
+      }
 
 }
