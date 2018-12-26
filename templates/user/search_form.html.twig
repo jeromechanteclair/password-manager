@@ -35,11 +35,15 @@ var currentId='{{currentId}}';
         selected.push($(this).val());
 
       })
+      if (users.length>0){
+
+
       for(let i in users){
         if( users[i]['username'].includes(e.value)){
             results.push(users[i]);
         }
       }
+       }
     }
 
       for (let x in selected){

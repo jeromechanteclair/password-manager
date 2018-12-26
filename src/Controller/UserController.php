@@ -71,8 +71,8 @@ class UserController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $user->setEnabled(1);
-            $user->setPlainPassword('dd');
-            $user->addRole('ROLE_MEMBER');
+            $user->setPlainPassword('temp');
+            $user->addRole('ROLE_ADMIN');
             try {
                 $em->flush();
                 $status = "success";

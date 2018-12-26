@@ -15,5 +15,6 @@
 {{ form_widget(form.phone,{'attr': {'placeholder': 'Tel'}}) }}
 <span class="icon-search">  <img class="logo_small" src=" {{asset('images/phone.svg')}}"></span>
 </div>
-  <button class="btn" id='adduser'>{{ button_label|default('+') }}</button>
+{{ form_widget(form.plainPassword,{'attr': {'placeholder': 'Tel'}}) }}
+<button class="btn" id='adduser'>{{ button_label|default('+') }}</button>
 {{ form_end(form) }}

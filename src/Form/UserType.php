@@ -27,7 +27,7 @@ class UserType extends AbstractType
             ))
             ->add('plainPassword', RepeatedType::class, array(
 
-                'type' => HiddenType::class,
+                'type' => TextType::class,
                 'options' => array(
                     'translation_domain' => 'FOSUserBundle',
                     'attr' => array(
