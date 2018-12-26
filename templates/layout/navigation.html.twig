@@ -7,13 +7,7 @@
     {% if app.user %}
     <div class="nav-left">
         <img class="logo_small" src=" {{asset('images/tourmanager.png')}}">
-      <div class="dropdown"><a href="/">Bonjour <b>{{ app.user.username }}</b> </a>
-        <div>
-        <a href="{{ path('user_show',{'id': app.user.id}) }}">Mes informations</a>
-        <a href="{{ path('user_edit',{'id': app.user.id}) }}">Editer mon profil</a>
-        <a href="/logout">Me déconnecter</a>
-      </div>
-    </div>
+
 
     </div>
     <div class="nav-center">
@@ -26,7 +20,13 @@
       </div>
     {% endif %}
     <div class="nav-right">
-
+        <div class="dropdown"><a href="/">Bonjour <b>{{ app.user.username }}</b> </a>
+          <div>
+          <a href="{{ path('user_show',{'id': app.user.id}) }}">Mes informations</a>
+          <a href="{{ path('user_edit',{'id': app.user.id}) }}">Editer mon profil</a>
+          <a href="/logout">Me déconnecter</a>
+        </div>
+       </div>
     </div>
   </nav>
 </header>

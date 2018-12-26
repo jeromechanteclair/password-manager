@@ -28,5 +28,20 @@
   </div>
   </aside>
   <main>
+
+      <section id="dates-container">
+          <div class="date-header">
+           <h2> Upcoming dates</h2>
+           <a href='{{ path('date_new',{'id':crew.id}) }}'><button>add new date</button></a>
+          </div>
+
+          {% for date in crew.date %}
+          <div class="date-item">
+            <p>{{date.day|date("m/d/Y")}}</p>
+            <p>{{date.city|capitalize}}</p>
+          </div>
+          {% endfor %}
+      </section>
+
   </main>
 {% endblock %}

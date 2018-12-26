@@ -1,0 +1,13 @@
+#dates-container{
+    .date-header{
+        border-bottom: 1px solid #eeeeee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 15px;
+
+    }
+    .date-item{
+        border-bottom: 1px solid #eeeeee;
+    }
+}

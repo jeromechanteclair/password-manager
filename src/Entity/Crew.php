@@ -42,11 +42,17 @@ class Crew
      */
     private $owner;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Date", mappedBy="crew", orphanRemoval=true)
+     */
+    private $date;
+
 
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->date = new ArrayCollection();
 
     }
 
@@ -102,6 +108,37 @@ class Crew
     public function setOwner(?user $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Date[]
+     */
+    public function getDate(): Collection
+    {
+        return $this->date;
+    }
+
+    public function addDate(Date $date): self
+    {
+        if (!$this->date->contains($date)) {
+            $this->date[] = $date;
+            $date->setCrew($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDate(Date $date): self
+    {
+        if ($this->date->contains($date)) {
+            $this->date->removeElement($date);
+            // set the owning side to null (unless already changed)
+            if ($date->getCrew() === $this) {
+                $date->setCrew(null);
+            }
+        }
 
         return $this;
     }
