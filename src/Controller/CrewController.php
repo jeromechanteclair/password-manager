@@ -23,12 +23,9 @@ class CrewController extends Controller
     public function newCrew(CrewRepository $crewRepository,Request $request): Response
     {
 
-        if($crewRepository->findLastInserted() === null){
-            $currentId = 1;
-        }
-        else{
-            $currentId = $crewRepository->findLastInserted()->getId()+1;
-        }
+
+        $currentId = $crewRepository->findLastInserted();
+    
         $crew = new Crew();
         $user = $this->container->get('security.token_storage')->getToken()->getUser();
         $form = $this->createForm(CrewType::class, $crew);

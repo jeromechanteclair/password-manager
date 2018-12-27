@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Date;
 use App\Entity\User;
+use App\Entity\DateSchedule;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -22,6 +23,18 @@ class DateEntityType extends AbstractType
             ->add('type',TextType::class,array('attr'=>['autocomplete' => 'off']))
             ->add('city',TextType::class,array('attr'=>['autocomplete' => 'off']))
             ->add('day',DateType::class,array('attr'=>['autocomplete' => 'off']))
+            ->add('schedule', EntityType::class, array(
+              'class' => DateSchedule::class,
+              'expanded'     => true,
+              'multiple'     => true,
+              'choice_label' => 'name',
+          ))
+              ->add('users', EntityType::class, array(
+                'class' => User::class,
+                'expanded'     => true,
+                'multiple'     => true,
+                'choice_label' => 'username',
+            ))
               ->add('save', SubmitType::class, array(
                   'attr' => array('class' => 'save'),
               ));

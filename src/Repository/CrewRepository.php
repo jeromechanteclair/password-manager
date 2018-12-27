@@ -27,12 +27,12 @@ class CrewRepository extends ServiceEntityRepository
      */
     public function findLastInserted()
     {
-        return $this
-            ->createQueryBuilder("e")
-            ->orderBy("e.id", "DESC")
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
+        $req = "SELECT AUTO_INCREMENT as last_id FROM INFORMATION_SCHEMA.TABLES WHERE table_name = 'crew'";
+        $connection= $this->getEntityManager()->getConnection();
+        $stmt = $connection->prepare($req);
+        $stmt->execute();
+        $row = $stmt->fetch();
+        return  $typeId = $row['last_id'];
     }
 
     // /**

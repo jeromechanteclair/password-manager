@@ -24,8 +24,14 @@ class User extends BaseUser
      * @Serializer\Groups({"list"})
      */
     protected $id;
-
-
+    /**
+    * @Serializer\Groups({"list"})
+    */
+    protected $username;
+    /**
+    * @Serializer\Groups({"list"})
+    */
+    protected $email;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Crew", mappedBy="users")
@@ -43,6 +49,11 @@ class User extends BaseUser
      */
     private $phone;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Date", mappedBy="users")
+     */
+    private $dates;
+
 
     public function __construct()
     {
@@ -51,6 +62,7 @@ class User extends BaseUser
       //  $this->addRole("ROLE_ADMIN");
         $this->crews = new ArrayCollection();
         $this->CrewRoles = new ArrayCollection();
+        $this->dates = new ArrayCollection();
 
     }
 
@@ -121,6 +133,34 @@ class User extends BaseUser
     public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Date[]
+     */
+    public function getDates(): Collection
+    {
+        return $this->dates;
+    }
+
+    public function addDate(Date $date): self
+    {
+        if (!$this->dates->contains($date)) {
+            $this->dates[] = $date;
+            $date->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDate(Date $date): self
+    {
+        if ($this->dates->contains($date)) {
+            $this->dates->removeElement($date);
+            $date->removeUser($this);
+        }
 
         return $this;
     }

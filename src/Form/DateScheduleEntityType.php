@@ -20,13 +20,16 @@ class DateScheduleEntityType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name',TextAreaType::class,array('attr'=>['autocomplete' => 'off']))
+            ->add('name',TextAreaType::class,array(
+                'attr'=>['autocomplete' => 'off'])
+                )
 
-            ->add('startTime',DateType::class,array('attr'=>['autocomplete' => 'off']))
-            ->add('endTime',DateType::class,array('attr'=>['autocomplete' => 'off']))
-              ->add('save', SubmitType::class, array(
-                  'attr' => array('class' => 'save'),
-              ));
+            ->add('startTime',DateType::class,array(
+                'attr'=>['autocomplete' => 'off'])
+                )
+            ->add('endTime',DateType::class,array(
+                'attr'=>['autocomplete' => 'off']))
+            ;
 
 
     }

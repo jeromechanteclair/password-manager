@@ -3,6 +3,7 @@
 namespace App\Controller;
 use App\Entity\DateSchedule;
 use App\Form\DateScheduleEntityType;
+use App\Repository\DateScheduleRepository;
 use App\Repository\DateRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,9 +27,11 @@ class DateScheduleController extends AbstractController
         /**
          * @Route("/crew/{crewid}/date/{dateid}/addschedule", name="date_schedule_new")
          */
-        public function newDateSchedule($dateid,Request $request,DateRepository $dateRepository): Response
+        public function newDateSchedule($dateid,Request $request,DateScheduleRepository $dateScheduleRepository,DateRepository $dateRepository): Response
         {
+
             $dateSchedule = new DateSchedule();
+            $dateScheduleId = $dateScheduleRepository->findnextInserted();
             $user = $this->container->get('security.token_storage')->getToken()->getUser();
             $form = $this->createForm(DateScheduleEntityType::class, $dateSchedule);
             $form->handleRequest($request);
@@ -51,6 +54,7 @@ class DateScheduleController extends AbstractController
             return $this->render('date_schedule/new.html.twig', [
 
                 'form' => $form->createView(),
+                'dateScheduleId'=>$dateScheduleId
             ]);
         }
 }

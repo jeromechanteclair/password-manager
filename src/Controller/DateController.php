@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\Date;
 use App\Form\DateEntityType;
 use App\Repository\CrewRepository;
+use App\Repository\DateRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,9 +25,10 @@ class DateController extends AbstractController
     /**
      * @Route("/crew/{id}/date/new", name="date_new")
      */
-    public function newDate($id,Request $request,CrewRepository $crewRepository): Response
+    public function newDate($id,Request $request,CrewRepository $crewRepository,DateRepository $dateRepository): Response
     {
         $date = new Date();
+        $nextid = $dateRepository->findnextInserted();
         $user = $this->container->get('security.token_storage')->getToken()->getUser();
         $form = $this->createForm(DateEntityType::class, $date);
         $form->handleRequest($request);
@@ -49,6 +51,7 @@ class DateController extends AbstractController
         return $this->render('date/new.html.twig', [
             'crewid' => $id,
             'form' => $form->createView(),
+            'dateid'=>$nextid
         ]);
     }
 }

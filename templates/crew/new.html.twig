@@ -6,53 +6,43 @@
 
 
 
-    <h1>Create new Crew</h1>
+<h1>Create new Crew</h1>
 
 
 <form name="crew" method="post" id="form_crew">
 
-      <div class="heading">
-      {{ form_label(form.name) }}
-      </div>
+    <div class="heading">
+        {{ form_label(form.name) }}
+    </div>
     {{ form_widget(form.name,{'attr': {'placeholder': 'Set name for crew...'}}) }}
 
-
-
     <div class="heading">
-      <label>Add members to crew</label>
+        <label>Add members to crew</label>
     </div>
 
     {{ include('user/search_form.html.twig') }}
     <div class="selected"></div>
 
-    <div id="crew_users">
-      <div class="userItemadmin" >
-      <input type="checkbox" id="crew_users_{{owner.id}}" name="crew[users][]" value="{{owner.id}}" checked>
-      <span><label for="crew_users_{{owner.id}}">{{owner.username}}</label>
-      <label for="crew_users_{{owner.id}}">{{owner.email}}</label></span>
-  <p>Owner</p></div>
+    <div id="crew_users" class="addedUsers">
+        <div class="userItemadmin" >
+          <input type="checkbox" id="crew_users_{{owner.id}}" name="crew[users][]" value="{{owner.id}}" checked>
+          <span><label for="crew_users_{{owner.id}}">{{owner.username}}</label>
+          <label for="crew_users_{{owner.id}}">{{owner.email}}</label></span>
+          <p>Owner</p>
+        </div>
 
 
     </div>
-
     {{ form_widget(form.save)}}
-{{ form_widget(form._token) }}
+    {{ form_widget(form._token) }}
+
   </form>
 
     <div id="newUser"></div>
 
 <script>
+var currentId='{{currentId}}';
 
-
-
-
-var path='{{ path('user_new') }}';
-$.ajax({
-  url: path,
-  context: document.body
-  }).done(function(data) {
-  $( '#createNew' ).html( data );
-});
 
 //--- On Save function submit---//
 $(document).on('click','#crew_save',function(e){
@@ -86,5 +76,37 @@ $(document).on('click','#crew_save',function(e){
    }})
  })
 
+ function displayResults(){
+
+   if(results === undefined || results.length == 0 && $('#searchform input[type="search"]').val().length>2){
+
+     $('#createNew').removeClass('hide');
+
+       $('#searchform input[type="search"]').css('color', 'red');
+
+   }
+   else{
+     $('#createNew').addClass('hide');
+         $('#searchform input[type="search"]').css('color', 'black');
+   }
+   $('#users_results .userItem').remove();
+
+     for(let i in results){
+       $('#users_results').append('<div class="userItem" >\
+       <input type="checkbox" id="crew_users_'+results[i]['id']+'" name="crew[users][]" value="'+results[i]['id']+'" checked>\
+       <span><label for="crew_users_'+results[i]['id']+'">'+results[i]['username']+'</label>\
+       <label for="crew_users_'+results[i]['id']+'">'+results[i]['email']+'</label></span>\
+       <select><option value="test" data-crew="'+currentId+'" data-user="'+results[i]['id']+'">test</option>\
+       <option value="other" data-crew="'+currentId+'" data-user="'+results[i]['id']+'">other</option></select></div>');
+   }
+ }
+ function displayNewUser(data){
+     $('.addedUsers').append('<div class="userItem" >\
+     <input type="checkbox" id="crew_users_'+data.userId+'" name="crew[users][]" value="'+data.userId+'" checked>\
+     <span><label for="crew_users_'+data.userId+'">'+data.username+'</label>\
+     <label for="crew_users_'+data.userId+'">'+data.useremail+'</label></span>\
+     <select><option value="test" data-crew="'+currentId+'" data-user="'+data.userId+'">test</option>\
+     <option value="other" data-crew="'+currentId+'" data-user="'+data.userId+'">other</option></select></div>');
+ }
 </script>
 {% endblock %}

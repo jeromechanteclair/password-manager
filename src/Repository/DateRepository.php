@@ -19,22 +19,22 @@ class DateRepository extends ServiceEntityRepository
         parent::__construct($registry, Date::class);
     }
 
-    // /**
-    //  * @return Date[] Returns an array of Date objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Repository method for finding the newest inserted
+     * entry inside the database. Will return the latest
+     * entry when one is existent, otherwise will return
+     * null.
+      * @return Date[] Returns an array of Crew objects
+     */
+    public function findnextInserted()
     {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $req = "SELECT AUTO_INCREMENT as last_id FROM INFORMATION_SCHEMA.TABLES WHERE table_name = 'date'";
+        $connection= $this->getEntityManager()->getConnection();
+        $stmt = $connection->prepare($req);
+        $stmt->execute();
+        $row = $stmt->fetch();
+        return  $typeId = $row['last_id'];
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Date

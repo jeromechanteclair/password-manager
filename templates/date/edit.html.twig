@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    {{dateid}}
+
+<form name="date_entity" method="post" id="date_entity">
+<p> Type </p>
+{{ form_widget(form.type)}}
+<p> City </p>
+{{ form_widget(form.city)}}
+<p> Day </p>
+{{ form_widget(form.day)}}
+<hr />
+<div id="date_entity_schedule">
+
+</div>
+
+
+<br />
+{{ form_widget(form.save)}}
+{{ form_widget(form._token) }}
+
+</form>
+
+<div id="schedule">
+
+</div>
+
+
+
+
+<script>
+    var pathschedule='{{ path('date_schedule_new',{'crewid':crewid,'dateid':dateid}) }}';
+
+    $.ajax({
+      url: pathschedule,
+      context: document.body
+      }).done(function(data) {
+      $( '#schedule' ).html( data );
+    });
+
+    $(document).on('click','#date_schedule_save',function(e){
+        let scheduleName = $(this).parent().find('#date_schedule_entity_name').val();
+
+        console.log(scheduleId,scheduleName);
+        $('#date_entity_schedule').append('<input type="checkbox" id="date_entity_schedule_1" name="date_entity[schedule][]" value="'+scheduleId+'" checked>\
+        <label for="date_entity_schedule_'+scheduleId+'">'+scheduleName+'</label>')
+        e.preventDefault();
+        let form_data =  $(this).parent().serialize();
+        console.log(form_data)
+
+        // the actual request to your newAction
+        $.ajax({
+          url: path,
+          type: 'POST',
+          dataType: 'json',
+          data: form_data,
+          success:function(data){
+              console.log("[API] SUCCESS: "+data.message);
+          }
+        })
+
+
+
+        scheduleId = scheduleId+1;
+    })
+</script>
+{% endblock %}

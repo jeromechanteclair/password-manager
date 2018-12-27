@@ -1,13 +1,22 @@
-{% extends 'base.html.twig' %}
+
 
 {% block title %}{% endblock %}
 
 {% block body %}
+{{dateScheduleId}}
 
-    {{ form_start(form) }}
+<form name="date_schedule_entity"  id="date_schedule_entity" data-schedule="{{dateScheduleId}}">
+    <p>Name</p>
+    {{ form_widget(form.name)}}
+    <p>Start</p>
+    {{ form_widget(form.startTime)}}
+    <p>End</p>
+    {{ form_widget(form.endTime)}}
+    <button id="date_schedule_save">Add schedule</button>
+    {{ form_widget(form._token) }}
+</form>
 
-
-
-
-    {{ form_end(form) }}
+<script>
+    var scheduleId = Number($('#date_schedule_entity').attr('data-schedule'));
+</script>
 {% endblock %}

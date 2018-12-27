@@ -44,9 +44,15 @@ class Date
      */
     private $schedule;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\user", inversedBy="dates")
+     */
+    private $users;
+
     public function __construct()
     {
         $this->schedule = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -128,6 +134,32 @@ class Date
             if ($schedule->getDate() === $this) {
                 $schedule->setDate(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|user[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(user $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+        }
+
+        return $this;
+    }
+
+    public function removeUser(user $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
         }
 
         return $this;

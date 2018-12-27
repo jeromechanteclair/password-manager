@@ -78,18 +78,15 @@
           }
           if(data.status == 'success'){
             console.log("[API] SUCCESS: "+data.message+data.userId);
-            $('#crew_users').append('<div class="userItem" >\
-            <input type="checkbox" id="crew_users_'+data.userId+'" name="crew[users][]" value="'+data.userId+'" checked>\
-            <span><label for="crew_users_'+data.userId+'">'+data.username+'</label>\
-            <label for="crew_users_'+data.userId+'">'+data.useremail+'</label></span>\
-            <select><option value="test" data-crew="'+currentId+'" data-user="'+data.userId+'">test</option>\
-            <option value="other" data-crew="'+currentId+'" data-user="'+data.userId+'">other</option></select></div>');
+            displayNewUser(data);
+
           }
           $('#createNew').addClass('hide');
 
           $('#adduser').attr("disabled",false);
         }
       });
+
     });
   </script>
 {% endblock %}
