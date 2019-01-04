@@ -1,79 +1,127 @@
 
 {% block search %}
+
 <div id="searchform">
   <div class="search-input">
-<input type="search" placeholder="Search for users" onkeyup="showMe(this)"> <span class="icon-search">  <img class="logo_small" src=" {{asset('images/search.svg')}}"></span>
-</div>
+    <input type="search" placeholder="Search for users" onkeyup="showResults(this)">
+    <span class="icon-search">
+        <img class="logo_small" src=" {{asset('images/search.svg')}}">
+    </span>
+  </div>
   <div id=users_results>
     <div id="createNew" class="hide"></div>
   </div>
 </div>
+
 {% endblock %}
 <script>
-var path='{{ path('user_new') }}';
-//  console.log(path);
-$.ajax({
-  url: path,
-  context: document.body
-}).done(function(data) {
-  $( '#createNew' ).html( data );
-});
-var url='{{ path('user_search') }}';
-var users;
-var results=[];
+
+  var newUserPath = '{{ path('user_new') }}';
+  var searchUserPath = '{{ path('user_search') }}';
+  var users;
+  var results = [];
+
+  /*
+  *  Get new user form
+  *  @return twig template
+  */
+  $.ajax({
+    url: newUserPath,
+    context: document.body
+    }).done(function(data) {
+    $( '#createNew' ).html( data );
+  });
+
+  /*
+  *  Get all users from db
+  *  @return json
+  */
   $.ajax({
     dataType: "json",
-    url:url,
+    url:searchUserPath,
     success: function(data){
       return users = data;
     }
   });
 
-  function showMe(e) {
-    results = [];
-    selected =[];
+      /*
+      *  On search keyup
+      *  @return users found in search
+      */
+      function showResults(e) {
+        results = [];
+        selected = [];
+        if(e.value.length>2){
 
-    if(e.value.length>2){
+          $('#crew_users .userItem input').each(function(){
+            selected.push($(this).val());
 
-      $('#crew_users .userItem input').each(function(){
-        selected.push($(this).val());
-
-      })
-      for(let i in users){
-        if( users[i]['username'].includes(e.value)){
-            results.push(users[i]);
-        }
-      }
-
-    }
-
-      for (let x in selected){
-
-        for(let i in results){
-          if(results[i]['id']=== Number(selected[x])){
-            results.splice(i,1)
+          })
+          for(let i in users){
+            if( users[i]['username'].includes(e.value)){
+              results.push(users[i]);
+            }
           }
         }
+        for (let x in selected){
+          for(let i in results){
+            if(results[i]['id']=== Number(selected[x])){
+              results.splice(i,1)
+            }
+          }
+        }
+        displayResults();
       }
 
-    displayResults();
-  }
+    /*
+    *  Display results from search
+    *  roles depends on wich template youre on[crew,date]
+    *  @return html template
+    */
+    function displayResults(){
+        if(results === undefined || results.length == 0 && $('#searchform input[type="search"]').val().length>2){
+            $('#createNew').removeClass('hide');
+            $('#searchform input[type="search"]').css('color', 'red');
+        }
+        else{
+            $('#createNew').addClass('hide');
+            $('#searchform input[type="search"]').css('color', 'black');
+        }
+        $('#users_results .userItem').remove();
+        for(let i in results){
+            $('#users_results').append(function(){
+                let html='';
+                html+='<div class="userItem" >\
+                <input type="checkbox" id="date_entity_'+results[i]['id']+'" name="date_entity[users][]" value="'+results[i]['id']+'" checked>\
+                <span><label for="date_entity_'+results[i]['id']+'">'+results[i]['username']+'</label>\
+                <label for="date_entity_'+results[i]['id']+'">'+results[i]['email']+'</label></span>\
+                <select>';
+                for (let x in roles){
+                    html+='<option value="'+roles[x]+'" data-crew="'+currentId+'" data-user="'+results[i]['id']+'">'+roles[x]+'</option>'
+                }
+                html+='</select></div>';
+                return html;
+            });
+        }
+    }
 
-
-  $(document).on('click','#users_results .userItem',function(e){
-    e.preventDefault();
-    $('#searchform input[type="search"]').val('');
-    $(this).appendTo($('.addedUsers'));
-    $('#users_results .userItem').remove();
-  })
-  $(document).on('click','.addedUsers .userItem',function(e){
-    e.preventDefault();
-   $(this).remove();
-  })
-  $(document).on('click','.userItem select',function(e){
-   // Do something
-   e.stopPropagation();
-});
+    /*
+    *  On click actions
+    */
+    $(document).on('click','#users_results .userItem',function(e){
+        e.preventDefault();
+        $('#searchform input[type="search"]').val('');
+        $(this).appendTo($('.addedUsers'));
+        $('#users_results .userItem').remove();
+    })
+    $(document).on('click','.addedUsers .userItem',function(e){
+        e.preventDefault();
+        $(this).remove();
+    })
+    $(document).on('click','.userItem select',function(e){
+        // Do something
+        e.stopPropagation();
+    });
 
 
 

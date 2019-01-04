@@ -39,29 +39,8 @@
 
 <script>
 var currentId ="{{crewid}}";
-function displayResults(){
-  if(results === undefined || results.length == 0 && $('#searchform input[type="search"]').val().length>2){
+var roles = ["promoter","soundtech",'lighttech'];
 
-    $('#createNew').removeClass('hide');
-
-      $('#searchform input[type="search"]').css('color', 'red');
-
-  }
-  else{
-    $('#createNew').addClass('hide');
-        $('#searchform input[type="search"]').css('color', 'black');
-  }
-  $('#users_results .userItem').remove();
-
-    for(let i in results){
-      $('#users_results').append('<div class="userItem" >\
-      <input type="checkbox" id="date_entity_'+results[i]['id']+'" name="date_entity[users][]" value="'+results[i]['id']+'" checked>\
-      <span><label for="date_entity_'+results[i]['id']+'">'+results[i]['username']+'</label>\
-      <label for="date_entity_'+results[i]['id']+'">'+results[i]['email']+'</label></span>\
-      <select><option value="test" data-crew="'+currentId+'" data-user="'+results[i]['id']+'">test</option>\
-      <option value="other" data-crew="'+currentId+'" data-user="'+results[i]['id']+'">other</option></select></div>');
-  }
-}
 function displayNewUser(data){
     $('.addedUsers').append('<div class="userItem" >\
     <input type="checkbox" id="date_entity_'+data.userId+'" name="date_entity[users][]" value="'+data.userId+'" checked>\
